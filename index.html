@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>May Data - Dynamic HTML Table</title>
+    <!-- Include DataTables CSS for styling -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            margin: 0 auto;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <h1>May Data</h1>
+    <table id="mayData" class="display">
+        <thead>
+            <tr>
+                <th>Bill Name</th>
+                <th>Due Date</th>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <!-- Include jQuery and DataTables JS for functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: 'may_data.csv', // Path to your CSV file
+                dataType: 'text',
+            }).done(successFunction);
+
+            function successFunction(data) {
+                var allRows = data.split(/\r?\n|\r/);
+                var table = $('#mayData').DataTable(); // Initialize DataTable
+
+                for (var singleRow = 1; singleRow < allRows.length; singleRow++) {
+                    var rowCells = allRows[singleRow].split(',');
+
+                    if (rowCells.length === 4) {
+                        table.row.add([
+                            rowCells[0],
+                            rowCells[1],
+                            rowCells[2],
+                            rowCells[3]
+                        ]).draw(false);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
